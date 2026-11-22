@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BrightSmile Dental Clinic</title>
+<style>
+:root{
+  --teal:#0e8c8c; --teal-d:#0a6b6b; --teal-l:#e3f5f4;
+  --navy:#12304a; --ink:#1d2b36; --muted:#5f7280;
+  --bg:#f5fafa; --card:#ffffff; --line:#dbe7e8;
+  --accent:#ff8a5b; --ok:#2e9e6a; --bad:#c9453f;
+  --radius:16px; --shadow:0 6px 20px rgba(18,48,74,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+img,svg{max-width:100%}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+.wrap{width:min(1180px,92%);margin-inline:auto}
+section{padding:64px 0}
+h1,h2,h3{color:var(--navy);line-height:1.2}
+.sec-head{margin-bottom:28px}
+.sec-head h2{font-size:clamp(1.6rem,3vw,2.1rem)}
+.sec-head p{color:var(--muted);margin-top:6px;max-width:60ch}
+.eyebrow{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:11px 22px;font-weight:600;background:var(--teal);color:#fff;transition:.2s;text-decoration:none}
+.btn:hover{background:var(--teal-d);transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--teal-d);border:1.5px solid var(--teal)}
+.btn.ghost:hover{background:var(--teal-l)}
+.btn.small{padding:7px 14px;font-size:.88rem}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* Header */
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.2rem;color:var(--navy);text-decoration:none}
+.logo span.mark{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--teal),#35c2b6);display:grid;place-items:center;color:#fff}
+nav ul{display:flex;gap:6px;list-style:none;align-items:center}
+nav a{display:block;padding:8px 14px;border-radius:999px;text-decoration:none;color:var(--ink);font-weight:500}
+nav a:hover,nav a.active{background:var(--teal-l);color:var(--teal-d)}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:1.1rem}
+
+/* Hero */
+.hero{padding:70px 0 50px;background:radial-gradient(1000px 400px at 85% 0,#d3f0ec 0,transparent 60%),linear-gradient(180deg,#fff,var(--bg))}
+.hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(2rem,4.6vw,3.3rem);margin-bottom:14px}
+.hero h1 em{font-style:normal;color:var(--teal)}
+.hero p{color:var(--muted);max-width:52ch;margin-bottom:24px;font-size:1.05rem}
+.hero .actions{display:flex;gap:12px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.stat b{display:block;font-size:1.8rem;color:var(--teal-d)}
+.stat span{color:var(--muted);font-size:.9rem}
+
+/* Tabs */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.tab{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:9px 18px;font-weight:600;color:var(--muted);transition:.2s}
+.tab:hover{border-color:var(--teal);color:var(--teal-d)}
+.tab[aria-selected="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+
+/* Cards */
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);transition:.2s}
+.card:hover{transform:translateY(-3px)}
+.t-card .ico{font-size:1.8rem;width:52px;height:52px;border-radius:14px;background:var(--teal-l);display:grid;place-items:center;margin-bottom:12px}
+.t-card h3{font-size:1.08rem;margin-bottom:6px}
+.t-card p{color:var(--muted);font-size:.93rem;margin-bottom:12px}
+.meta{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:.9rem;margin-bottom:14px}
+.price{font-weight:700;color:var(--teal-d)}
+.chip{display:inline-block;background:var(--teal-l);color:var(--teal-d);padding:3px 10px;border-radius:999px;font-size:.78rem;font-weight:600}
+
+/* Estimator */
+.est{display:grid;grid-template-columns:1fr 1.1fr;gap:0;padding:0;overflow:hidden}
+.est-form{padding:30px}
+.est-out{padding:30px;background:linear-gradient(160deg,var(--navy),#1c4a63);color:#e8f4f6}
+.field{margin-bottom:16px}
+label{display:block;font-weight:600;font-size:.9rem;margin-bottom:6px}
+select,input[type=text],input[type=tel],input[type=number]{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff}
+select:focus,input:focus{border-color:var(--teal);outline:none;box-shadow:0 0 0 3px rgba(14,140,140,.18)}
+.est-out h3{color:#fff;font-size:1.25rem;margin-bottom:4px}
+.est-out .sub{opacity:.75;font-size:.9rem;margin-bottom:18px}
+.big-price{font-size:clamp(1.7rem,3.4vw,2.4rem);font-weight:800;color:#7ff0df;margin-bottom:4px}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.fact{background:rgba(255,255,255,.08);border-radius:12px;padding:12px 14px}
+.fact small{display:block;opacity:.7;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em}
+.fact b{font-size:1.02rem}
+.est-out h4{margin:6px 0 8px;font-size:.95rem}
+.est-out ul{padding-left:20px}
+.est-out li{margin-bottom:5px;font-size:.93rem}
+.note{font-size:.78rem;opacity:.65;margin-top:14px}
+
+/* Dentists */
+.d-card{display:flex;flex-direction:column;gap:10px}
+.d-top{display:flex;gap:14px;align-items:center}
+.avatar{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:1.2rem;color:#fff;flex:none}
+.d-top h3{font-size:1.08rem}
+.d-top small{color:var(--muted)}
+.stars{color:#f5a623;letter-spacing:2px}
+.quals{font-size:.9rem;color:var(--muted);list-style:none}
+.quals li::before{content:"🎓 "}
+.reviews{display:none;border-top:1px dashed var(--line);padding-top:10px}
+.reviews.open{display:block}
+.rev{background:var(--bg);border-radius:12px;padding:10px 12px;margin-bottom:8px;font-size:.9rem}
+.rev b{display:block;font-size:.85rem}
+.d-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+
+/* Booking */
+.book{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.cal-head h3{font-size:1.15rem}
+.icon-btn{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:#fff;font-size:1.1rem}
+.icon-btn:hover:not(:disabled){border-color:var(--teal);color:var(--teal)}
+.icon-btn:disabled{opacity:.4;cursor:not-allowed}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+.cal .dow{font-size:.78rem;font-weight:700;color:var(--muted);padding:4px 0}
+.day{aspect-ratio:1;border-radius:12px;border:1.5px solid transparent;background:#f0f6f6;font-weight:600}
+.day:hover:not(:disabled){border-color:var(--teal)}
+.day.today{border-color:var(--accent)}
+.day.sel{background:var(--teal);color:#fff}
+.day:disabled{background:transparent;color:#b8c5cb;cursor:not-allowed;text-decoration:line-through}
+.day.blank{visibility:hidden}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-top:12px}
+.slot-tabs{display:flex;gap:8px;margin:6px 0 14px}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:8px;margin-bottom:18px}
+.slot{padding:9px 6px;border-radius:10px;border:1.5px solid var(--line);background:#fff;font-weight:600;font-size:.9rem}
+.slot:hover:not(:disabled){border-color:var(--teal)}
+.slot.sel{background:var(--teal);border-color:var(--teal);color:#fff}
+.slot:disabled{background:#f1f4f5;color:#a9b7bd;cursor:not-allowed;text-decoration:line-through}
+.empty{color:var(--muted);font-size:.93rem;padding:10px 0}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.summary{background:var(--teal-l);border-radius:12px;padding:10px 14px;font-size:.92rem;margin-bottom:14px}
+.appts{margin-top:26px}
+.appt{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-left:5px solid var(--teal);border-radius:12px;padding:12px 16px;margin-bottom:10px}
+.appt small{color:var(--muted);display:block}
+.btn.del{background:#fff;color:var(--bad);border:1.5px solid #f0c4c1}
+.btn.del:hover{background:#fdeceb}
+
+/* Modal + footer */
+.overlay{position:fixed;inset:0;background:rgba(10,30,45,.55);display:none;place-items:center;z-index:100;padding:20px}
+.overlay.show{display:grid}
+.modal{background:#fff;border-radius:20px;padding:30px;max-width:420px;width:100%;text-align:center;animation:pop .25s ease}
+.modal .tick{width:64px;height:64px;border-radius:50%;background:var(--ok);color:#fff;font-size:2rem;display:grid;place-items:center;margin:0 auto 14px}
+.modal p{color:var(--muted);margin:8px 0 18px}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:none;opacity:1}}
+footer{background:var(--navy);color:#bcd0da;padding:34px 0;text-align:center;font-size:.9rem}
+footer b{color:#fff}
+
+/* Responsive */
+@media(max-width:900px){
+  .hero-grid,.est,.book{grid-template-columns:1fr}
+  .burger{display:block}
+  nav ul{display:none;position:absolute;top:66px;left:0;right:0;background:#fff;flex-direction:column;align-items:stretch;padding:12px 4%;border-bottom:1px solid var(--line)}
+  nav ul.open{display:flex}
+  section{padding:46px 0}
+}
+@media(max-width:480px){
+  .row2,.facts{grid-template-columns:1fr}
+  .est-form,.est-out{padding:22px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top"><span class="mark">🦷</span>BrightSmile</a>
+    <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <nav aria-label="Main">
+      <ul id="menu">
+        <li><a href="#treatments">Treatments</a></li>
+        <li><a href="#estimator">Cost Estimator</a></li>
+        <li><a href="#dentists">Dentists</a></li>
+        <li><a href="#booking">Book Appointment</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<div class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Consultations &amp; Procedures</span>
+      <h1>Healthy teeth, <em>stress-free</em> appointments.</h1>
+      <p>Explore treatments, estimate costs, meet our dentists and reserve a morning or evening consultation in under a minute.</p>
+      <div class="actions">
+        <a class="btn" href="#booking">Book a consultation</a>
+        <a class="btn ghost" href="#estimator">Estimate my cost</a>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>6</b><span>Specialist dentists</span></div>
+      <div class="stat"><b>15+</b><span>Treatments offered</span></div>
+      <div class="stat"><b>4.8★</b><span>Average patient rating</span></div>
+      <div class="stat"><b>Mon–Sat</b><span>Morning &amp; evening slots</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CATALOG -->
+<section id="treatments">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Treatment Catalog</span>
+      <h2>Find the right treatment</h2>
+      <p>Browse by category. Tap “Estimate cost” on any treatment to see a price range and recovery guidance.</p>
+    </div>
+    <div class="tabs" id="catTabs" role="tablist" aria-label="Treatment categories"></div>
+    <div class="grid" id="catGrid"></div>
+  </div>
+</section>
+
+<!-- ESTIMATOR -->
+<section id="estimator" style="background:#fff">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Procedure Cost Estimator</span>
+      <h2>Know before you visit</h2>
+      <p>Choose a procedure to see an estimated range, how long it takes and how to recover.</p>
+    </div>
+    <div class="card est">
+      <div class="est-form">
+        <div class="field"><label for="estProc">Procedure</label><select id="estProc"></select></div>
+        <div class="field" id="qtyField"><label for="estQty" id="qtyLabel">Quantity</label><input type="number" id="estQty" min="1" max="32" value="1"></div>
+        <div class="field"><label for="estComplex">Case complexity</label>
+          <select id="estComplex">
+            <option value="1">Standard</option>
+            <option value="1.25">Moderate (extra work likely)</option>
+            <option value="1.5">Complex (specialist / difficult case)</option>
+          </select>
+        </div>
+        <button class="btn" id="estBook">Book this procedure →</button>
+      </div>
+      <div class="est-out" aria-live="polite">
+        <h3 id="oName"></h3>
+        <div class="sub" id="oCat"></div>
+        <div class="big-price" id="oPrice"></div>
+        <div class="sub" id="oUnit"></div>
+        <div class="facts">
+          <div class="fact"><small>Duration</small><b id="oDur"></b></div>
+          <div class="fact"><small>Visits</small><b id="oVisits"></b></div>
+        </div>
+        <h4>Recovery guidelines</h4>
+        <ul id="oRec"></ul>
+        <p class="note">Estimates are indicative only (INR). Final cost is confirmed after clinical examination.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DENTISTS -->
+<section id="dentists">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Our Dentists</span>
+      <h2>Meet the specialists</h2>
+      <p>Qualified, experienced and loved by patients.</p>
+    </div>
+    <div class="tabs" id="dFilter" role="tablist" aria-label="Filter dentists"></div>
+    <div class="grid" id="dGrid"></div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section id="booking" style="background:#fff">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Appointment Booking</span>
+      <h2>Pick a date and time</h2>
+      <p>Morning slots 9:00 AM – 12:30 PM · Evening slots 5:00 PM – 8:00 PM · Closed on Sundays.</p>
+    </div>
+    <div class="book">
+      <div class="card">
+        <div class="cal-head">
+          <button class="icon-btn" id="prevM" aria-label="Previous month">‹</button>
+          <h3 id="monthLbl"></h3>
+          <button class="icon-btn" id="nextM" aria-label="Next month">›</button>
+        </div>
+        <div class="cal" id="cal"></div>
+        <div class="legend"><span>🟧 Today</span><span>🟦 Selected</span><span>⛔ Unavailable / Sunday</span></div>
+      </div>
+      <div class="card">
+        <form id="bookForm" novalidate>
+          <div class="row2">
+            <div class="field"><label for="bDentist">Dentist</label><select id="bDentist"></select></div>
+            <div class="field"><label for="bProc">Procedure</label><select id="bProc"></select></div>
+          </div>
+          <label>Time of day</label>
+          <div class="slot-tabs" role="tablist">
+            <button type="button" class="tab" id="tabMorning" data-p="morning" aria-selected="true">☀️ Morning</button>
+            <button type="button" class="tab" id="tabEvening" data-p="evening" aria-selected="false">🌙 Evening</button>
+          </div>
+          <div class="slots" id="slots"></div>
+          <div class="summary" id="sumBox">Select a date and a time slot.</div>
+          <div class="row2">
+            <div class="field"><label for="bName">Full name</label><input type="text" id="bName" autocomplete="name" placeholder="Your name"></div>
+            <div class="field"><label for="bPhone">Phone</label><input type="tel" id="bPhone" autocomplete="tel" placeholder="10-digit mobile"></div>
+          </div>
+          <div id="formErr" style="color:var(--bad);font-size:.88rem;min-height:1.3em;margin-bottom:8px"></div>
+          <button class="btn" type="submit">Confirm appointment</button>
+        </form>
+      </div>
+    </div>
+    <div class="appts">
+      <h3 style="margin-bottom:12px">Your appointments</h3>
+      <div id="apptList"></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap"><b>BrightSmile Dental Clinic</b> · Mon–Sat · Demo application — sample data only.</div></footer>
+
+<div class="overlay" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="modal">
+    <div class="tick">✓</div>
+    <h3 id="mTitle">Appointment confirmed!</h3>
+    <p id="mText"></p>
+    <button class="btn" id="mClose">Done</button>
+  </div>
+</div>
+
+<script>
+/* ---------- DATA ---------- */
+const CATS = {
+  preventive:{label:"Preventive Cleaning",icon:"🪥"},
+  rootcanal:{label:"Root Canal",icon:"🩺"},
+  braces:{label:"Orthodontic Braces",icon:"😁"},
+  whitening:{label:"Cosmetic Whitening",icon:"✨"},
+  extraction:{label:"Extractions",icon:"🦷"}
+};
+// unit: how price scales. price in INR.
+const TREATMENTS = [
+ {id:"scaling",cat:"preventive",name:"Scaling & Polishing",desc:"Removes plaque and tartar, polishes enamel.",min:800,max:2000,unit:"per session",qty:false,dur:"30–45 min",visits:"1",rec:["Mild gum sensitivity for 1–2 days is normal.","Avoid very hot, cold or spicy food for 24 hours.","Brush gently twice daily with a soft brush.","Repeat every 6 months."]},
+ {id:"fluoride",cat:"preventive",name:"Fluoride Treatment",desc:"Strengthens enamel and reduces cavity risk.",min:500,max:1200,unit:"per session",qty:false,dur:"15–20 min",visits:"1",rec:["Do not eat or drink for 30 minutes after.","Avoid hard, crunchy foods for the day.","Resume normal brushing the next morning."]},
+ {id:"checkup",cat:"preventive",name:"Check-up & Digital X-ray",desc:"Full oral exam with imaging and treatment plan.",min:400,max:1500,unit:"per visit",qty:false,dur:"20–30 min",visits:"1",rec:["No recovery needed.","Share your medical history and current medicines.","Follow up on any plan given by the dentist."]},
+ {id:"sealant",cat:"preventive",name:"Pit & Fissure Sealants",desc:"Protective coating on back teeth, ideal for children.",min:600,max:1500,unit:"per tooth",qty:true,dur:"15 min / tooth",visits:"1",rec:["Avoid sticky food for 24 hours.","Eating is fine right after the procedure.","Sealants are checked at routine visits."]},
+ {id:"rct-ant",cat:"rootcanal",name:"Root Canal – Front Tooth",desc:"Single-canal treatment to save an infected tooth.",min:3500,max:6500,unit:"per tooth",qty:true,dur:"45–60 min / visit",visits:"1–2",rec:["Numbness fades in 2–3 hours; avoid chewing until it does.","Mild soreness for 2–3 days; use prescribed pain relief.","Avoid biting hard foods on the tooth until crowned.","Complete antibiotics if prescribed."]},
+ {id:"rct-mol",cat:"rootcanal",name:"Root Canal – Molar",desc:"Multi-canal treatment for back teeth.",min:5500,max:10000,unit:"per tooth",qty:true,dur:"60–90 min / visit",visits:"2–3",rec:["Chew on the opposite side until the crown is placed.","Soreness may last up to a week.","Return promptly for the crown or filling.","Call us if swelling or severe pain appears."]},
+ {id:"crown",cat:"rootcanal",name:"Post-RCT Crown (Ceramic)",desc:"Cap that protects a root-treated tooth.",min:4000,max:9000,unit:"per tooth",qty:true,dur:"2 visits × 45 min",visits:"2",rec:["Temporary crown: avoid sticky food.","Floss carefully around the new crown.","Mild bite adjustment may be needed."]},
+ {id:"metal",cat:"braces",name:"Metal Braces",desc:"Durable, cost-effective traditional braces.",min:25000,max:45000,unit:"full treatment",qty:false,dur:"60 min placement",visits:"12–24 months of monthly visits",rec:["Teeth feel sore for 3–5 days after fitting and after tightening.","Avoid hard, sticky or chewy food.","Brush after every meal; use interdental brushes.","Use orthodontic wax for irritation."]},
+ {id:"ceramic",cat:"braces",name:"Ceramic Braces",desc:"Tooth-coloured brackets for a discreet look.",min:40000,max:70000,unit:"full treatment",qty:false,dur:"60–75 min placement",visits:"12–24 months of monthly visits",rec:["Soreness for 3–5 days after adjustments.","Limit tea, coffee and curry to prevent staining.","Be careful with hard foods to avoid bracket damage."]},
+ {id:"aligner",cat:"braces",name:"Clear Aligners",desc:"Removable, nearly invisible aligner trays.",min:80000,max:200000,unit:"full treatment",qty:false,dur:"45 min fitting",visits:"8–18 months, check-ups every 6–8 weeks",rec:["Wear 20–22 hours a day.","Remove only to eat, drink (except water) and brush.","Clean trays daily; store in the case.","Mild pressure with each new set is normal."]},
+ {id:"retainer",cat:"braces",name:"Retainers",desc:"Keeps teeth in place after braces.",min:3000,max:8000,unit:"per arch",qty:true,dur:"30 min",visits:"1–2",rec:["Wear as instructed, usually nightly.","Clean daily; never boil or use hot water.","Bring it to every check-up."]},
+ {id:"inoffice",cat:"whitening",name:"In-Office Whitening",desc:"Professional gel + light, visible results in one visit.",min:8000,max:18000,unit:"per session",qty:false,dur:"60–90 min",visits:"1",rec:["Avoid tea, coffee, red wine and tobacco for 48 hours.","Temporary sensitivity is common.","Use sensitivity toothpaste for a few days.","Results last 1–2 years with good care."]},
+ {id:"takehome",cat:"whitening",name:"Take-home Whitening Kit",desc:"Custom trays with dentist-grade gel.",min:5000,max:10000,unit:"per kit",qty:false,dur:"30–60 min nightly for 10–14 days",visits:"2",rec:["Follow the wear time exactly.","Stop and call us if gums become irritated.","Avoid staining foods during the course."]},
+ {id:"veneer",cat:"whitening",name:"Porcelain Veneers",desc:"Thin shells to reshape and brighten front teeth.",min:12000,max:30000,unit:"per tooth",qty:true,dur:"60 min / visit",visits:"2–3",rec:["Temporary veneers need gentle care.","Avoid biting nails or hard objects.","Brush and floss normally; polish at check-ups."]},
+ {id:"simple",cat:"extraction",name:"Simple Extraction",desc:"Removal of a visible, fully erupted tooth.",min:800,max:2500,unit:"per tooth",qty:true,dur:"20–30 min",visits:"1",rec:["Bite on gauze for 30–45 minutes.","No rinsing, spitting or straws for 24 hours.","Soft, cool food for the first day.","Salt-water rinses from day 2."]},
+ {id:"surgical",cat:"extraction",name:"Surgical Extraction",desc:"For broken, impacted or deeply rooted teeth.",min:3500,max:8000,unit:"per tooth",qty:true,dur:"45–60 min",visits:"1–2 (with review)",rec:["Apply ice packs 15 min on / 15 off for 24 hours.","Swelling peaks around day 2–3.","Sleep with head elevated; avoid smoking and exercise for 3 days.","Take prescribed medicines; stitches are reviewed after 5–7 days."]},
+ {id:"wisdom",cat:"extraction",name:"Wisdom Tooth Removal",desc:"Impacted wisdom tooth removal with X-ray planning.",min:5000,max:12000,unit:"per tooth",qty:true,dur:"45–75 min",visits:"2",rec:["Rest for 1–2 days.","Liquid/soft diet for 3 days.","Do not disturb the clot — avoid straws and vigorous rinsing.","Contact us if pain worsens after day 3 (dry socket)."]}
+];
+const DENTISTS = [
+ {id:"d1",name:"Dr. Anika Sharma",spec:"preventive",role:"General & Preventive Dentist",exp:12,rating:4.9,color:"#0e8c8c",quals:["BDS, Govt. Dental College","MDS – Public Health Dentistry","Certified in Pediatric Dentistry"],reviews:[["Ritu K.",5,"Very gentle and explained everything clearly. My kids love her."],["Manpreet S.",5,"Best cleaning I've had. No pain at all."],["Anil D.",4,"Thorough check-up, slightly long wait."]]},
+ {id:"d2",name:"Dr. Rohan Mehta",spec:"rootcanal",role:"Endodontist",exp:15,rating:4.8,color:"#3a6ea5",quals:["BDS, MDS – Conservative Dentistry & Endodontics","Fellowship in Microscopic Endodontics"],reviews:[["Sandeep G.",5,"Painless root canal done in two visits. Highly recommend."],["Neha P.",5,"Was terrified, but he made it easy."],["Karan B.",4,"Great work. Follow-up reminders were helpful."]]},
+ {id:"d3",name:"Dr. Priya Nair",spec:"braces",role:"Orthodontist",exp:10,rating:4.9,color:"#9b5de5",quals:["BDS, MDS – Orthodontics & Dentofacial Orthopedics","Invisalign® certified provider"],reviews:[["Simran J.",5,"My smile transformed in 14 months. Lovely team."],["Aditya R.",5,"Clear aligners were handled perfectly."],["Meera L.",5,"Honest about cost and timeline."]]},
+ {id:"d4",name:"Dr. Vikram Singh",spec:"extraction",role:"Oral & Maxillofacial Surgeon",exp:17,rating:4.7,color:"#c9453f",quals:["BDS, MDS – Oral & Maxillofacial Surgery","Advanced training in impacted wisdom tooth surgery"],reviews:[["Harpreet K.",5,"Wisdom tooth out in under an hour, minimal swelling."],["Rahul T.",4,"Skilled and calm. Aftercare notes were clear."],["Jaspal S.",5,"Professional and reassuring."]]},
+ {id:"d5",name:"Dr. Sana Qureshi",spec:"whitening",role:"Cosmetic Dentist",exp:9,rating:4.8,color:"#e08a1e",quals:["BDS, MDS – Prosthodontics","Certified in Smile Design & Veneers"],reviews:[["Tanvi M.",5,"Teeth 4 shades brighter before my wedding!"],["Gurleen B.",5,"Veneers look totally natural."],["Dev A.",4,"Some sensitivity but worth it."]]},
+ {id:"d6",name:"Dr. Arjun Kapoor",spec:"preventive",role:"Family Dentist",exp:8,rating:4.6,color:"#2e9e6a",quals:["BDS, PG Diploma in Clinical Dentistry","Basic Life Support certified"],reviews:[["Lakshmi V.",5,"Friendly and punctual. Evening slot suited me."],["Imran Z.",4,"Good advice on daily oral care."],["Pooja N.",5,"Quick and painless filling."]]}
+];
+
+/* ---------- HELPERS ---------- */
+const $ = s => document.querySelector(s);
+const inr = n => "₹" + Math.round(n).toLocaleString("en-IN");
+const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const stars = n => "★".repeat(Math.round(n)) + "☆".repeat(5-Math.round(n));
+const pad = n => String(n).padStart(2,"0");
+const keyOf = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+function store(k,v){ try{ if(v===undefined){ return JSON.parse(localStorage.getItem(k)); } localStorage.setItem(k,JSON.stringify(v)); }catch(e){ return null; } }
+
+/* ---------- NAV ---------- */
+$("#burger").onclick = () => {
+  const m = $("#menu"); const open = m.classList.toggle("open");
+  $("#burger").setAttribute("aria-expanded", open);
+};
+document.querySelectorAll("#menu a").forEach(a => a.onclick = () => $("#menu").classList.remove("open"));
+
+/* ---------- CATALOG ---------- */
+let activeCat = "preventive";
+function renderTabs(){
+  $("#catTabs").innerHTML = Object.entries(CATS).map(([k,c]) =>
+    `<button class="tab" role="tab" data-k="${k}" aria-selected="${k===activeCat}">${c.icon} ${c.label}</button>`).join("");
+  $("#catTabs").querySelectorAll(".tab").forEach(b => b.onclick = () => { activeCat = b.dataset.k; renderTabs(); renderCatalog(); });
+}
+function renderCatalog(){
+  $("#catGrid").innerHTML = TREATMENTS.filter(t => t.cat===activeCat).map(t => `
+    <article class="card t-card">
+      <div class="ico">${CATS[t.cat].icon}</div>
+      <h3>${t.name}</h3>
+      <p>${t.desc}</p>
+      <div class="meta"><span class="price">${inr(t.min)} – ${inr(t.max)}</span><span class="chip">${t.unit}</span></div>
+      <div class="meta"><span>⏱ ${t.dur}</span></div>
+      <button class="btn small ghost" data-id="${t.id}">Estimate cost</button>
+    </article>`).join("");
+  $("#catGrid").querySelectorAll("button").forEach(b => b.onclick = () => {
+    $("#estProc").value = b.dataset.id; updateEstimate();
+    $("#estimator").scrollIntoView({behavior:"smooth"});
+  });
+}
+
+/* ---------- ESTIMATOR ---------- */
+function procOptions(){
+  return Object.entries(CATS).map(([k,c]) =>
+    `<optgroup label="${c.label}">` + TREATMENTS.filter(t=>t.cat===k).map(t=>`<option value="${t.id}">${t.name}</option>`).join("") + `</optgroup>`).join("");
+}
+function updateEstimate(){
+  const t = TREATMENTS.find(x => x.id === $("#estProc").value);
+  const qtyOn = t.qty;
+  $("#qtyField").style.display = qtyOn ? "" : "none";
+  $("#qtyLabel").textContent = t.unit === "per arch" ? "Number of arches (1–2)" : "Number of teeth";
+  let q = qtyOn ? Math.max(1, Math.min(32, parseInt($("#estQty").value)||1)) : 1;
+  if(t.unit==="per arch") q = Math.min(q,2);
+  const f = parseFloat($("#estComplex").value);
+  $("#oName").textContent = t.name;
+  $("#oCat").textContent = CATS[t.cat].label;
+  $("#oPrice").textContent = `${inr(t.min*q*f)} – ${inr(t.max*q*f)}`;
+  $("#oUnit").textContent = qtyOn ? `${q} × ${t.unit.replace("per ","")} · complexity ×${f}` : `${t.unit} · complexity ×${f}`;
+  $("#oDur").textContent = t.dur;
+  $("#oVisits").textContent = t.visits;
+  $("#oRec").innerHTML = t.rec.map(r=>`<li>${r}</li>`).join("");
+}
+$("#estProc").innerHTML = procOptions();
+["#estProc","#estQty","#estComplex"].forEach(s => { $(s).addEventListener("input", updateEstimate); });
+$("#estBook").onclick = () => { $("#bProc").value = $("#estProc").value; $("#booking").scrollIntoView({behavior:"smooth"}); renderSummary(); };
+
+/* ---------- DENTISTS ---------- */
+let dFilter = "all";
+function renderDFilter(){
+  const opts = [["all","All"], ...Object.entries(CATS).map(([k,c])=>[k,c.label])];
+  $("#dFilter").innerHTML = opts.map(([k,l]) => `<button class="tab" data-k="${k}" aria-selected="${k===dFilter}">${l}</button>`).join("");
+  $("#dFilter").querySelectorAll(".tab").forEach(b => b.onclick = () => { dFilter=b.dataset.k; renderDFilter(); renderDentists(); });
+}
+function renderDentists(){
+  const list = DENTISTS.filter(d => dFilter==="all" || d.spec===dFilter);
+  $("#dGrid").innerHTML = list.length ? list.map(d => `
+    <article class="card d-card">
+      <div class="d-top">
+        <div class="avatar" style="background:${d.color}">${d.name.split(" ").slice(1).map(w=>w[0]).join("")}</div>
+        <div><h3>${d.name}</h3><small>${d.role} · ${d.exp} yrs</small><div><span class="stars">${stars(d.rating)}</span> <b>${d.rating}</b> <small>(${d.reviews.length} reviews)</small></div></div>
+      </div>
+      <ul class="quals">${d.quals.map(q=>`<li>${q}</li>`).join("")}</ul>
+      <div class="reviews" id="rev-${d.id}">${d.reviews.map(r=>`<div class="rev"><b>${r[0]} <span class="stars">${stars(r[1])}</span></b>${r[2]}</div>`).join("")}</div>
+      <div class="d-actions">
+        <button class="btn small ghost" data-rev="${d.id}" aria-expanded="false">Show reviews</button>
+        <button class="btn small" data-book="${d.id}">Book</button>
+      </div>
+    </article>`).join("") : `<p class="empty">No dentists in this category.</p>`;
+  $("#dGrid").querySelectorAll("[data-rev]").forEach(b => b.onclick = () => {
+    const box = $("#rev-"+b.dataset.rev); const o = box.classList.toggle("open");
+    b.textContent = o ? "Hide reviews" : "Show reviews"; b.setAttribute("aria-expanded", o);
+  });
+  $("#dGrid").querySelectorAll("[data-book]").forEach(b => b.onclick = () => {
+    $("#bDentist").value = b.dataset.book; renderSlots(); renderSummary();
+    $("#booking").scrollIntoView({behavior:"smooth"});
+  });
+}
+
+/* ---------- BOOKING ---------- */
+const MORNING = ["09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30"];
+const EVENING = ["17:00","17:30","18:00","18:30","19:00","19:30","20:00"];
+const fmt = t => { let [h,m] = t.split(":").map(Number); const ap = h>=12?"PM":"AM"; h = h%12||12; return `${h}:${pad(m)} ${ap}`; };
+const hash = s => { let x=0; for(const c of s) x=(x*31+c.charCodeAt(0))>>>0; return x; };
+
+const today = new Date(); today.setHours(0,0,0,0);
+let view = new Date(today.getFullYear(), today.getMonth(), 1);
+let selDate = null, selSlot = null, period = "morning";
+let appts = store("bs_appts") || [];
+
+$("#bDentist").innerHTML = DENTISTS.map(d=>`<option value="${d.id}">${d.name} — ${d.role}</option>`).join("");
+$("#bProc").innerHTML = procOptions();
+
+function isBooked(date, slot){
+  const dk = keyOf(date), did = $("#bDentist").value;
+  if(appts.some(a => a.date===dk && a.slot===slot && a.dentist===did)) return true;
+  return hash(dk+slot+did) % 4 === 0;      // simulated existing bookings
+}
+function renderCal(){
+  $("#monthLbl").textContent = view.toLocaleString("en-IN",{month:"long",year:"numeric"});
+  $("#prevM").disabled = view <= new Date(today.getFullYear(), today.getMonth(), 1);
+  const maxView = new Date(today.getFullYear(), today.getMonth()+3, 1);
+  $("#nextM").disabled = view >= maxView;
+  let html = ["S","M","T","W","T","F","S"].map(d=>`<div class="dow">${d}</div>`).join("");
+  const first = new Date(view.getFullYear(), view.getMonth(), 1).getDay();
+  const days = new Date(view.getFullYear(), view.getMonth()+1, 0).getDate();
+  for(let i=0;i<first;i++) html += `<div class="day blank"></div>`;
+  for(let d=1; d<=days; d++){
+    const dt = new Date(view.getFullYear(), view.getMonth(), d);
+    const off = dt < today || dt.getDay()===0;
+    const cls = ["day", +dt===+today?"today":"", selDate && +selDate===+dt?"sel":""].join(" ");
+    html += `<button type="button" class="${cls}" data-d="${d}" ${off?"disabled":""} aria-label="${dt.toDateString()}">${d}</button>`;
+  }
+  $("#cal").innerHTML = html;
+  $("#cal").querySelectorAll(".day[data-d]").forEach(b => b.onclick = () => {
+    selDate = new Date(view.getFullYear(), view.getMonth(), +b.dataset.d); selSlot = null;
+    renderCal(); renderSlots(); renderSummary();
+  });
+}
+function renderSlots(){
+  const box = $("#slots");
+  if(!selDate){ box.innerHTML = `<p class="empty">Pick a date from the calendar to view slots.</p>`; return; }
+  const list = period==="morning" ? MORNING : EVENING;
+  const now = new Date();
+  box.innerHTML = list.map(s => {
+    const [h,m] = s.split(":").map(Number);
+    const past = +selDate===+today && (h*60+m) <= (now.getHours()*60+now.getMinutes());
+    const dis = past || isBooked(selDate,s);
+    return `<button type="button" class="slot ${selSlot===s?"sel":""}" data-s="${s}" ${dis?"disabled":""}>${fmt(s)}</button>`;
+  }).join("");
+  box.querySelectorAll(".slot").forEach(b => b.onclick = () => { selSlot = b.dataset.s; renderSlots(); renderSummary(); });
+}
+function renderSummary(){
+  const d = DENTISTS.find(x=>x.id===$("#bDentist").value);
+  const p = TREATMENTS.find(x=>x.id===$("#bProc").value);
+  $("#sumBox").innerHTML = selDate && selSlot
+    ? `📅 <b>${selDate.toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long"})}</b> at <b>${fmt(selSlot)}</b><br>${d.name} · ${p.name}`
+    : "Select a date and a time slot.";
+}
+document.querySelectorAll(".slot-tabs .tab").forEach(b => b.onclick = () => {
+  period = b.dataset.p; selSlot = null;
+  document.querySelectorAll(".slot-tabs .tab").forEach(x => x.setAttribute("aria-selected", x===b));
+  renderSlots(); renderSummary();
+});
+$("#bDentist").onchange = () => { selSlot = null; renderSlots(); renderSummary(); };
+$("#bProc").onchange = renderSummary;
+$("#prevM").onclick = () => { view = new Date(view.getFullYear(), view.getMonth()-1, 1); renderCal(); };
+$("#nextM").onclick = () => { view = new Date(view.getFullYear(), view.getMonth()+1, 1); renderCal(); };
+
+$("#bookForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const name = $("#bName").value.trim(), phone = $("#bPhone").value.replace(/\s|-/g,"");
+  const err = $("#formErr");
+  if(!selDate || !selSlot){ err.textContent = "Please choose a date and time slot."; return; }
+  if(name.length < 2){ err.textContent = "Please enter your full name."; return; }
+  if(!/^\+?\d{10,13}$/.test(phone)){ err.textContent = "Enter a valid phone number (10 digits)."; return; }
+  err.textContent = "";
+  const a = { id:Date.now(), date:keyOf(selDate), slot:selSlot, dentist:$("#bDentist").value, proc:$("#bProc").value, name, phone };
+  appts.push(a); store("bs_appts", appts);
+  const d = DENTISTS.find(x=>x.id===a.dentist);
+  $("#mText").textContent = `${name}, you're booked with ${d.name} on ${selDate.toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long"})} at ${fmt(a.slot)}.`;
+  $("#modal").classList.add("show"); $("#mClose").focus();
+  selSlot = null; $("#bookForm").reset(); $("#bDentist").value = a.dentist;
+  renderSlots(); renderSummary(); renderAppts();
+});
+$("#mClose").onclick = () => $("#modal").classList.remove("show");
+$("#modal").onclick = e => { if(e.target.id==="modal") $("#modal").classList.remove("show"); };
+document.addEventListener("keydown", e => { if(e.key==="Escape") $("#modal").classList.remove("show"); });
+
+function renderAppts(){
+  const list = [...appts].sort((a,b)=> (a.date+a.slot).localeCompare(b.date+b.slot));
+  $("#apptList").innerHTML = list.length ? list.map(a => {
+    const d = DENTISTS.find(x=>x.id===a.dentist), p = TREATMENTS.find(x=>x.id===a.proc);
+    const dt = new Date(a.date+"T00:00:00");
+    return `<div class="appt"><div><b>${dt.toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short",year:"numeric"})} · ${fmt(a.slot)}</b>
+      <small>${esc(d.name)} · ${esc(p.name)} · ${esc(a.name)}</small></div>
+      <button class="btn small del" data-id="${a.id}">Cancel</button></div>`;
+  }).join("") : `<p class="empty">No appointments yet. Book one above.</p>`;
+  $("#apptList").querySelectorAll(".del").forEach(b => b.onclick = () => {
+    appts = appts.filter(a => String(a.id)!==b.dataset.id); store("bs_appts", appts);
+    renderAppts(); renderSlots();
+  });
+}
+
+/* ---------- INIT ---------- */
+renderTabs(); renderCatalog(); updateEstimate();
+renderDFilter(); renderDentists();
+renderCal(); renderSlots(); renderSummary(); renderAppts();
+</script>
+</body>
+</html>
